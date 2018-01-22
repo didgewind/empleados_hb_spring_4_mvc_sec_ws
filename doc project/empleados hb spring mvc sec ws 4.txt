@@ -1,4 +1,6 @@
 Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc, seguridad y servicios web.
+EN REALIDAD ESTO DE LOS SERVICIOS WEB NO LO VEO POR NINGUNA PARTE Y ADEMÁS HAY QUE ARREGLAR EL MVC
+LOGOUT Y LA SEGURIDAD JAVA CONFIG Y AÑADIR LA SEGURIDAD DECLARATIVA COMO OPCIÓN.
 Podemos atacar la bd empleados compleja en mysql o la simple en postgres cuando está todo integrado
 con spring. Para seleccionar una u otra, en el beans.xml necesitamos asignar el
 name="dataSource" en el datasource que queramos y el name="myHBSessionFactory" a la
