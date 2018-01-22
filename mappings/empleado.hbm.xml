@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="profe.empleados.model">
+
+	<class name="Empleado" table="empleados">
+
+		<id name="cif" column="cif" type="string" />
+		<property name="nombre" />
+		<property name="apellidos" />
+		<property name="edad" />
+
+		<many-to-one name="direccion" column="direccion" class="Direccion"
+			cascade="save-update" />
+
+<!--  		<one-to-one name="regalo" property-ref="para" class="Regalo" /> -->
+
+		<!-- many-to-many o one-to-many (no entidad), depende de la pk de emp_dir_mail 
+			(si es sólo dir_email entonces es one-to-many, como en este caso) -->
+		<set name="dirEmails" table="dir_email" cascade="all,delete-orphan">
+			<key column="cif" />
+			<element type="string" column="dir_email" />
+		</set>
+
+		<!-- one to one con empleado en jt unidireccional -->
+		<join table="ordenador_empleado" optional="true">
+        	<key column="cif" unique="true"/>
+		    <many-to-one name="ordenador" lazy="false"
+		        column="id_ordenador"
+		        not-null="true"
+	    	    unique="true"/>
+	   	</join>
+
+		
+	</class>
+
+</hibernate-mapping>

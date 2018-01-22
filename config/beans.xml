@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+         http://www.springframework.org/schema/tx
+		 http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		 http://www.springframework.org/schema/aop
+		 http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<context:component-scan base-package="profe.empleados" />
+	<aop:aspectj-autoproxy/>
+	
+	<!-- Activando aspectj ltw -->
+<!-- 	<context:load-time-weaver aspectj-weaving="on"/> -->
+<!-- 	<tx:annotation-driven transaction-manager="txManagerHb" mode="aspectj"/> -->
+
+	<!-- Sin aspectj ltw -->
+	<tx:annotation-driven transaction-manager="txManagerHb" />
+
+	<bean id="txManagerHb" lazy-init="true"
+			class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="myHBSessionFactory" />
+	</bean>
+
+	
+		<!-- DATA SOURCE -->
+	<bean id="dSMysql" name="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		lazy-init="true" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/empleados_compleja" />
+		<property name="username" value="maza" />
+		<property name="password" value="maza" />
+	</bean>
+
+		<!-- DATA SOURCE -->
+	<bean id="dSPostgres" class="org.apache.commons.dbcp2.BasicDataSource"
+		lazy-init="true" destroy-method="close">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost/empleados_simple" />
+		<property name="username" value="postgres" />
+		<property name="password" value="a" />
+	</bean>
+
+	<!-- HIBERNATE mysql -->
+	<bean id="mysqlHbSessionFactory" name="myHBSessionFactory" lazy-init="true"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mappingResources">
+			<list>
+				<value>empleado.hbm.xml</value>
+				<value>evento.hbm.xml</value>
+				<value>nomina.hbm.xml</value>
+				<value>ordenador.hbm.xml</value>
+				<value>sala.hbm.xml</value>
+				<value>teclado.hbm.xml</value>
+			</list>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>profe.empleados.model.Direccion</value>
+				<value>profe.empleados.model.Regalo</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- HIBERNATE postgres -->
+	<bean id="postgresHbSessionFactory" lazy-init="true"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mappingResources">
+			<list>
+				<value>empleadosimple.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+<!-- 	<bean class="profe.empleados.aspectos.LoggingAspect" />-->
+	
+	<bean id="daoHb" class="profe.empleados.daos.EmpleadosDAOHB" lazy-init="true" />
+	
+<!-- 	<bean id="daoMock" class="profe.empleados.daos.EmpleadosDAOMock" lazy-init="true"/>-->
+	
+<!-- 	<bean id="negocio" class="profe.empleados.negocio.EmpleadosNegocioImpl" destroy-method="dispose">
+		<property name="dao" ref="daoMock" />
+	</bean>-->
+
+	<bean id="gestor" class="profe.empleados.ui.GestorEmpSpring">
+ 		<!-- <property name="negocio" ref="negocio" /> -->
+	</bean>
+
+</beans>

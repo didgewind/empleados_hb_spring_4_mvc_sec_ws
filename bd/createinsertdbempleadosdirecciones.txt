@@ -1,0 +1,36 @@
+drop database if exists empleados_direcciones;
+
+create database if not exists empleados_direcciones;
+use empleados_direcciones;
+
+## CREATES ##
+
+# Tablas de entidades
+
+CREATE TABLE IF NOT EXISTS direcciones
+(id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+calle VARCHAR(50),
+cp INTEGER);
+
+CREATE TABLE IF NOT EXISTS empleados 
+(cif VARCHAR(9) NOT NULL, 
+nombre VARCHAR(20), 
+apellidos VARCHAR(20), 
+edad INTEGER,
+direccion INTEGER,
+FOREIGN KEY (direccion) REFERENCES direcciones(id), 
+primary key (cif));
+
+grant all on empleados_direcciones.* to maza@localhost identified by 'maza';
+
+INSERT INTO direcciones (id, calle, cp) VALUES
+(1, "Carrasco, 8", 23443),
+(2, "Virgen del Amor, 75", 20067),
+(3, "Bailén, 7", 21331);
+
+INSERT INTO empleados (cif, nombre, apellidos, edad, direccion) VALUES
+("34334789H", "Antonio", "Martín", 23, 1),
+("21094387T", "Juan", "González", 40, 2),
+("01293474E", "Isabel", "Fuentes", 18, 3),
+("23948745F", "Lucille", "King", 25, 1),
+("40948574G", "Neo", "Preno", 12, 1);

@@ -1,0 +1,51 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        
+<!-- 	<import resource="beans-empleados.xml"/> -->
+ 
+ 	<mvc:annotation-driven />
+ 
+  	<mvc:interceptors>
+	 	<bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor" />
+	 	<!-- Para distinguir por url -->
+<!--  		<mvc:interceptor>
+			<mvc:mapping path="/home" />
+			<bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor" />
+ 		</mvc:interceptor>
+ -->  	</mvc:interceptors>
+
+	<bean id="viewResolver"
+			class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+		<property name="prefix">
+			<value>/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+		<!-- Register the welcome.properties -->
+	<bean id="messageSource"
+			class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="resources/mensajes" />
+		<!-- Una alternativa para tener varios ficheros de recursos -->
+		<!--         
+		<property name="basenames">
+            <list>
+                <value>resources/messages1</value>
+                <value>resources/messages2</value>
+            </list>
+        </property>
+         -->
+	</bean>
+	
+</beans>

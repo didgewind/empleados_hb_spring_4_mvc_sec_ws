@@ -1,0 +1,126 @@
+Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc, seguridad y servicios web.
+Podemos atacar la bd empleados compleja en mysql o la simple en postgres cuando está todo integrado
+con spring. Para seleccionar una u otra, en el beans.xml necesitamos asignar el
+name="dataSource" en el datasource que queramos y el name="myHBSessionFactory" a la
+factoría de sesiones correspondiente.
+
+Tenemos también los ficheros de creación de la misma bd pero la tabla regalos tiene clave compuesta
+
+Por un lado están las clases de una app hibernate sin
+spring (EmpleadosDAOHB, GestorEmpleados), por otro con spring integrado (EmpleadosDAOHBSpring,
+GestorEmpSpring) y además tenemos controladores mvc. Existen tres daos diferentes (un fake, 
+otro hibernate y un springhibernate), 
+una clase de negocio y dos gestores de consola (uno hibernate y otro springhibernate).
+
+Definimos algunos beans con anotaciones y otros con xml, un loggingaspect y transacciones declaradas.
+El LoggingAspect lo activamos desde el beans.xml o desde la clase (con el @Component)
+si usamos interfaces de spring, o en el META-INF/aop.xml si usamos aspectj ltw.
+
+Usamos aspectj ltw para que salten las transacciones al invocar métodos internamente.
+Activamos/desactivamos esto desde el beans.xml
+
+El mvc trabaja con empleados con operaciones básicas. Podemos configurarlo de dos formas:
+
+- mediante el web.xml y el applicationContext.xml. Para ello hay que tener
+el web.xml descomentado y comentar los extends de webconfig.MvcWebAI y security.SpringSWAI,
+para que no los detecte Spring como web initializers y no haya conflicto con el web.xml.
+
+- mediante configuración de clases. Comentamos lo relevante del web.xml y descomentamos
+el extends de webconfig.MvcWebAI. Usamos webconfig.EmpleadosWebConf para sustituir al
+applicationContext.xml, y webconfig.MvcWebAI para sustituir el código spring del web.xml.
+
+- Añadimos un interceptor opensessioninview en applicationContext.xml para mantener
+abierta la sesión (doc en el mismo fichero, pero no está probado)
+
+La seguridad la estamos haciendo con java config, así que sólo funciona si configuramos
+el mvc mediante configuración de clases. Necesitamos por una parte la clase 
+security.SpringSWAI con el extends descomentado, que el método getRootConfigClasses()
+de MvcWebAI devuelva new Class[] {WebSecurityConfig.class }, y configurarla en
+WebSecurityConfig.
+
+
+
+ESTO ES DE OTRO PROYECTO, PARA COGER COSAS QUIZÁS
+Proyecto básico de gestión de empleado spring con acceso a bds. Utilizamos dos daos diferentes 
+(un fake y un springhibernate) y dos clases de negocio intermedias sobre las 
+que aplicamos politicas transaccionales (leer más adelante xq dos clases de negocio). Es 
+bastante similar al proyecto spring-dataaccess, pero además metemos algo de aspectos,
+una introducción, un bean postprocessor, y utilizamos el jar resultante (como dependencia maven)
+en el proyecto mvc_empleados. Además, el interfaz de negocio define una nueva operación,
+resetBd, que resetea la bd eliminando todos los empleados e insertando la colección
+que recibe como parámetro. Para ello tira de otra operación nueva en el dao, eliminaAllEmpleados.
+
+* El fichero beans.xml se encuentra en src/main/resources/META-INF. Esta localización
+y la del fichero de mapeo de la entidad empleado facilita su inclusión en el .jar final
+y su acceso consiguiente por la app mvc_empleados.
+
+* La bd tiene dos tablas, una de empleados y otra de direcciones. La tabla de empleados se 
+relaciona con la de direcciones (N a 1) y consigo misma (por tutor, 1 a 1), aunque esta 
+relación no está reflejada en el mapeo del empleado.
+
+* DAOEmpFake tira de una bd en memoria
+
+* DAOEmpHB integra hibernate con spring. Necesitamos el fichero de mapeo .xml de la entidad
+empleado en el classpath (está en src/main/resources)
+
+* NegocioImpl: clase de negocio real. Implementa Negocio.
+
+* NegocioDelegate: clase de negocio que actúa de intermediaria entre el gestor y el objeto
+real de negocio (NegocioEmpleadosImpl). Resulta que cuando aplicamos aspectos en spring normalmente
+engancha un proxy que es el que intercepta la llamada y aplica el aspecto. Esto, aplicado a
+transacciones, resulta en lo siguiente:
+
+	In proxy mode (which is the default), only external method calls coming in through the proxy are 
+	intercepted. This means that self-invocation, in effect, a method within the target object calling 
+	another method of the target object, will not lead to an actual transaction at runtime even if the 
+	invoked method is marked with @Transactional.
+
+Por consiguiente, hacer pruebas con atributos transaccionales diferentes en métodos de una misma
+clase en la que uno de los métodos llama al otro no funciona (tratándose del mismo objeto), porque 
+sería una self-invocation. Esto sucede tanto si estamos usando proxies dinámicos jdk (el objeto
+sobre el que se aplica el proxy implementa al menos un interfaz) como si usamos cglib (no
+implementamos ninguna interfaz o forzamos la utilización de cglib de esta manera:)
+
+		<aop:config proxy-target-class="true">
+		    <!-- other beans defined here... -->
+		</aop:config>
+
+Solución para ver ejemplos de atributos transaccionales: utilizar dos objetos diferentes (lo que
+estamos haciendo aquí) o forzar la utilización de aspectj (ver cómo en el proyecto spring-solojpa)
+
+Así pues, NegocioImpl implementa correctamente todos los métodos de Negocio
+excepto insertaEmpleados, que directamente lanza una excepción. NegocioDelegate delega
+todos sus métodos en NegocioImpl excepto insertaEmpleados, que hace un for de la lista de
+empleados que recibe e invoca insertaEmpleado del delegado (NegocioImpl). De esta manera 
+podemos probar la combinación de diferentes atributos transaccionales. Desde el gestor utilizo
+NegocioDelegate y puedo invocar insertaEmpleados pasándole una lista de 4 empleados de los
+que tres son nuevos y el tercero ya existe. Los resultados son los siguientes (el primer atributo
+se aplica a insertaEmpleados y el segundo a insertaEmpleado):
+
+- Ambos métodos con SUPPORTS / ambos métodos con NOT_SUPPORTED: se insertan TODOS los empleados, 
+incluso el 4º y luego se lanza la excepción.
+
+- SUPPORTS y REQUIRED / REQUIRED y REQUIRES_NEW / REQUIRED y NOT_SUPPORTED: se insertan únicamente 
+los dos primeros empleados y el tercero lanza la excepción.
+
+- Ambos métodos REQUIRED: no se inserta ningún empleado, como es lógico y natural.
+
+* La clase Gestor es el controller-vista. Utiliza como negocio NegocioDelegate.
+
+* EmpleadosPointcuts define los pointcuts.
+
+* LoggingAspect está desactivado. Para activarlo, o bien lo anotamos con @Component, o bien
+descomentamos su declaración en beans.xml. El aspecto declara dos advices de loggeo before 
+y after aplicados sobre todos los métodos
+de negocio, y un around que se aplica sobre getEmpleado del delegado. El before sólo loggea,
+el after loggea y opera con el valor de retorno, y el around tiene un contador y cada
+tres peticiones de un empleado devuelve un empleado aleatorio.
+
+* EmpleadosPostProcessor (también desactivado) logea antes y después de inicializar cada bean.
+
+* EmpleadosIntroduction introduce un método nuevo en el delegado, definido en el interfaz
+EliminarEmpleado y su implementación (quizás habría que cambiarlo por una operación más descriptiva,
+pensar cómo). Lo invocamos en el método eliminaEmpleado del Gestor.
+
+* ApplicationContextProvider fue un intento de proporcionar el applicationcontext a cualquier
+bean de forma programática, pero no funciona (ver código de EliminarEmpleadoImpl).
