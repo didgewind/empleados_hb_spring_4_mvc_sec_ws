@@ -93,7 +93,7 @@ public class EmpleadosController {
 		return "empleados";
 	}*/
 
-	@GetMapping(value="open")
+	@GetMapping(value="empConDir")
 	public String muestraEmpYDir(@ModelAttribute Empleado emp, 
 			Model model) {
 		Empleado empAux = negocio.getEmpleado(emp.getCif());

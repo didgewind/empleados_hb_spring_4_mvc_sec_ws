@@ -1,12 +1,26 @@
-Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc, seguridad y servicios web.
-EN REALIDAD ESTO DE LOS SERVICIOS WEB NO LO VEO POR NINGUNA PARTE Y ADEMÁS HAY QUE ARREGLAR EL MVC
-LOGOUT Y LA SEGURIDAD JAVA CONFIG Y AÑADIR LA SEGURIDAD DECLARATIVA COMO OPCIÓN.
+Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc y seguridad con java
+config. El ws debe referirse a servicios web pero realmente no lo implementamos. Para un ejemplo
+de seguridad declarativa ver el proyecto jsf_primefaces_hibernate_spring_maven. Además hay un 
+ejemplo algo más completo de spring mvc en el proyecto spring 4 mvc.
+
 Podemos atacar la bd empleados compleja en mysql o la simple en postgres cuando está todo integrado
 con spring. Para seleccionar una u otra, en el beans.xml necesitamos asignar el
 name="dataSource" en el datasource que queramos y el name="myHBSessionFactory" a la
 factoría de sesiones correspondiente.
 
 Tenemos también los ficheros de creación de la misma bd pero la tabla regalos tiene clave compuesta
+
+* FUNCIONALIDAD
+
+Entrando en la raíz ya nos aparece un enlace a la página principal. Si la seguridad está activada
+al pulsar el enlace nos pedirá usuario y pass (user - user) y nos llevará a la página principal
+de gestión de usuarios. En esta tenemos varios botones, para que funcione el Get1 tenemos que rellenar
+el cif con un cif real, y luego pulsando Datos Extra nos lleva a otra pantalla en la que aparece
+también la dirección del empleado seleccionado (hacemos un Hibernate.initialize de la dirección
+en el dao para que no nos de un lazy initialization exception). Para hacer logout pulsamos sobre el enlace
+de la página principal.
+
+* ARQUITECTURA
 
 Por un lado están las clases de una app hibernate sin
 spring (EmpleadosDAOHB, GestorEmpleados), por otro con spring integrado (EmpleadosDAOHBSpring,
@@ -27,7 +41,8 @@ El mvc trabaja con empleados con operaciones básicas. Podemos configurarlo de d
 el web.xml descomentado y comentar los extends de webconfig.MvcWebAI y security.SpringSWAI,
 para que no los detecte Spring como web initializers y no haya conflicto con el web.xml.
 
-- mediante configuración de clases. Comentamos lo relevante del web.xml y descomentamos
+- mediante configuración de clases java config (si queremos utilizar la seguridad configurada
+con java config). Comentamos lo relevante del web.xml y descomentamos
 el extends de webconfig.MvcWebAI. Usamos webconfig.EmpleadosWebConf para sustituir al
 applicationContext.xml, y webconfig.MvcWebAI para sustituir el código spring del web.xml.
 

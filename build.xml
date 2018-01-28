@@ -35,6 +35,9 @@
 			<fileset dir="mappings" />
 		</copy>
 		<copy todir="${build.dir}/WEB-INF/classes" file="config/beans.xml" />
+		<copy todir="${build.dir}">
+			<fileset dir="html" />
+		</copy>
 		<copy todir="${build.dir}/jsp">
 			<fileset dir="${jsp.dir}" />
 		</copy>

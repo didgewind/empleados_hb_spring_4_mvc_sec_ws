@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,9 @@ public class EmpleadosDAOHBSpring implements EmpleadosDAO {
 
 	@Override
 	public Empleado getEmpleado(String cif) {
-		return (Empleado) getSession().get(Empleado.class, cif);
+		Empleado emp = (Empleado) getSession().get(Empleado.class, cif);
+		Hibernate.initialize(emp.getDireccion());
+		return emp;
 	}
 
 	@Override

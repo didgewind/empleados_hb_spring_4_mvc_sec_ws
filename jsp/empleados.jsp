@@ -45,7 +45,7 @@
 </p>
 
 <p>
-<a href="infoEmpleado.do">Datos extra</a>
+<a href="gestEmpleados/empConDir.do">Datos extra</a> <a href="logout">logout</a>
 </p>
 
 <p>

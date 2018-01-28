@@ -20,7 +20,7 @@
 </p>
 Dirección: ${empleado.direccion}
 <p>
-<a href="gestEmpleados.do">Volver atrás</a>
+<a href="../gestEmpleados.do">Volver atrás</a>
 </p>				
 </body>
 </html>
