@@ -23,7 +23,7 @@ import profe.empleados.model.Sala;
 @Transactional
 public class EmpleadosNegocioImpl implements EmpleadosNegocio {
 
-	@Resource(name="daoHbSpring")
+	@Resource(name="daoMock")
 	private EmpleadosDAO dao;
 	
 	@Autowired(required=false)

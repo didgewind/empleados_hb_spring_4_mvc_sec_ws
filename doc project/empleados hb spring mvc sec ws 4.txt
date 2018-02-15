@@ -1,7 +1,8 @@
-Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc y seguridad con java
-config. El ws debe referirse a servicios web pero realmente no lo implementamos. Para un ejemplo
-de seguridad declarativa ver el proyecto jsf_primefaces_hibernate_spring_maven. Además hay un 
-ejemplo algo más completo de spring mvc en el proyecto spring 4 mvc.
+Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc y seguridad. 
+El web service lo implementamos de forma superficial. Para un ejemplo más completo de REST,
+mirar el proyecto empleados spring del workspace spring mvc, rest, boot y cloud, que
+además utiliza un validador bastante completo. Asímismo hay un ejemplo algo más completo de 
+spring mvc en este mismo workspace en el proyecto spring 4 mvc.
 
 Podemos atacar la bd empleados compleja en mysql o la simple en postgres cuando está todo integrado
 con spring. Para seleccionar una u otra, en el beans.xml necesitamos asignar el
@@ -12,7 +13,9 @@ Tenemos también los ficheros de creación de la misma bd pero la tabla regalos 
 
 * FUNCIONALIDAD
 
-Entrando en la raíz ya nos aparece un enlace a la página principal. Si la seguridad está activada
+Entrando en la raíz ya nos aparece un enlace a la página de gestión y otro para hacer una petición
+rest (si éste da un error de NullPointerException asegurarse que el cif que se pasa en la url
+existe). Si la seguridad está activada
 al pulsar el enlace nos pedirá usuario y pass (user - user) y nos llevará a la página principal
 de gestión de usuarios. En esta tenemos varios botones, para que funcione el Get1 tenemos que rellenar
 el cif con un cif real, y luego pulsando Datos Extra nos lleva a otra pantalla en la que aparece
@@ -41,19 +44,36 @@ El mvc trabaja con empleados con operaciones básicas. Podemos configurarlo de d
 el web.xml descomentado y comentar los extends de webconfig.MvcWebAI y security.SpringSWAI,
 para que no los detecte Spring como web initializers y no haya conflicto con el web.xml.
 
-- mediante configuración de clases java config (si queremos utilizar la seguridad configurada
-con java config). Comentamos lo relevante del web.xml y descomentamos
+- mediante configuración de clases java config. Comentamos lo relevante del web.xml y descomentamos
 el extends de webconfig.MvcWebAI. Usamos webconfig.EmpleadosWebConf para sustituir al
 applicationContext.xml, y webconfig.MvcWebAI para sustituir el código spring del web.xml.
 
 - Añadimos un interceptor opensessioninview en applicationContext.xml para mantener
-abierta la sesión (doc en el mismo fichero, pero no está probado)
+abierta la sesión (doc en el mismo fichero, pero no funciona)
 
-La seguridad la estamos haciendo con java config, así que sólo funciona si configuramos
-el mvc mediante configuración de clases. Necesitamos por una parte la clase 
-security.SpringSWAI con el extends descomentado, que el método getRootConfigClasses()
-de MvcWebAI devuelva new Class[] {WebSecurityConfig.class }, y configurarla en
-WebSecurityConfig.
+La seguridad se aplica sobre la parte web. Para aplicar seguridad tenemos tres opciones:
+
+- Seguridad declarativa: filtro de seguridad en el web.xml, comentar el bloque <!-- Seguridad java config -->
+y descomentar el bloque <!-- Seguridad declarativa --> de applicationContext.xml. La seguridad se configura
+en este último bloque.
+
+- Seguridad java config + xml: filtro de seguridad en el web.xml, descomentar el bloque <!-- Seguridad java config -->
+y comentar el bloque <!-- Seguridad declarativa --> de applicationContext.xml. La seguridad se configura en la
+clase profe.mvc.empleados.security.WebSecurityConfig.
+
+- Seguridad java config sin xml: comentamos el filtro de seguridad del web.xml, habilitamos
+la configuración de clases java config (ver más arriba), descomentamos el extends de la clase 
+security.SpringSWAI y codificamos el método getRootConfigClasses()
+de MvcWebAI para que devuelva new Class[] {WebSecurityConfig.class }. La seguridad se sigue
+configurando en la clase WebSecurityConfig.
+
+Sobre el logout: parece que desde la versión 4 de spring security el logout por defecto sólo
+funciona cuando hacemos una petición de logout POST enviando un csrf (ver apuntes de seguridad
+spring). Para habilitar el logout get lo podemos hacer deshabilitando el csrf (como hacemos
+en este proyecto al configurar la seguridad de forma declarativa) o mediante el código que
+se encuentra en la clase WebSecurityConfig (que respeta el csrf).
+
+Además hay un fichero (security-more-detailed.xml) donde se ven más opciones de seguridad.
 
 
 

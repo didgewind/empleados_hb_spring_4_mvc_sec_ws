@@ -7,13 +7,23 @@
 		http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <description>spring mvc.xml</description>
 
-<!-- Configuración del contexto y el dispatcher desde web.xml -->
+<!-- ConfiguraciÃ³n del contexto y el dispatcher desde web.xml -->
   
-<!--   	<listener>
+   	<listener>
 		<listener-class>
              org.springframework.web.context.ContextLoaderListener
         </listener-class>
 	</listener>
+
+<!-- Activa seguridad spring -->
+  	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
      <servlet>
         <servlet-name>dispatcher</servlet-name>
@@ -29,10 +39,11 @@
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
         <url-pattern>*.do</url-pattern>
-    </servlet-mapping> -->
+    </servlet-mapping>
    
-<!-- Fin configuración del contexto y el dispatcher desde web.xml -->
+<!-- Fin configuraciÃ³n del contexto y el dispatcher desde web.xml -->
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

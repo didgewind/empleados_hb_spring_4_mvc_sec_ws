@@ -53,14 +53,14 @@
 		<property name="mappingResources">
 			<list>
 				<value>empleado.hbm.xml</value>
-				<value>evento.hbm.xml</value>
+ 				<value>evento.hbm.xml</value>
 				<value>nomina.hbm.xml</value>
 				<value>ordenador.hbm.xml</value>
 				<value>sala.hbm.xml</value>
 				<value>teclado.hbm.xml</value>
 			</list>
 		</property>
-		<property name="annotatedClasses">
+ 		<property name="annotatedClasses">
 			<list>
 				<value>profe.empleados.model.Direccion</value>
 				<value>profe.empleados.model.Regalo</value>

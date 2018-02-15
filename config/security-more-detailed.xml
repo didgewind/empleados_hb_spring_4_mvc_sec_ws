@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+         http://www.springframework.org/schema/security/spring-security.xsd">
+        
+	<sec:http use-expressions="true">
+		<sec:intercept-url pattern="/" access="permitAll" />
+		<sec:intercept-url pattern="/index.html" access="permitAll" />
+		<sec:intercept-url pattern="/hola.do" 
+				access="hasAnyRole('USER','ADMIN')" />
+		<sec:intercept-url pattern="/gestEmpleados.do" 
+				access="hasRole('ADMIN')" />
+		<!-- Con <sec:form-login sin atributos spring genera un login por defecto /> -->
+		<sec:form-login />
+<!-- 		    login-page="/loginpeich.xhtml" 
+			username-parameter="username"
+			password-parameter="password" />
+		<sec:logout logout-url="/index.jsf" />-->
+		<sec:logout logout-success-url="/"/>
+		<sec:csrf disabled="true"/> <!-- Para que funcione el /logout desde la url o hiperenlace -->
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<sec:user-service>
+				<sec:user name="profe" password="profe"	authorities="ROLE_ADMIN" />
+				<sec:user name="user" password="user"	authorities="ROLE_USER" />
+			</sec:user-service>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+	
+</beans>

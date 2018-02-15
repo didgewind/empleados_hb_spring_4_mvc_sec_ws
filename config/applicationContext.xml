@@ -2,26 +2,56 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc 
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
         
 <!-- 	<import resource="beans-empleados.xml"/> -->
  
  	<mvc:annotation-driven />
  
-  	<mvc:interceptors>
+<!-- Esto es para probar el patrón opensessioninview con spring e hibernate, pero no funciona y además
+	 parece que es un antipatrón. Mejor tener métodos específicos que invoquen Hibernate.initialize
+	 cuando sea necesario -->
+<!--   	<mvc:interceptors>
 	 	<bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor" />
-	 	<!-- Para distinguir por url -->
+ -->	 	<!-- Para distinguir por url -->
 <!--  		<mvc:interceptor>
 			<mvc:mapping path="/home" />
 			<bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor" />
  		</mvc:interceptor>
- -->  	</mvc:interceptors>
+   	</mvc:interceptors>-->
+   	
+   	<!-- Seguridad java config -->
+    	<context:component-scan base-package="profe.mvc.empleados.security" />
+  	
+   	<!-- Seguridad declarativa -->
+   	<!-- El <sec:csrf disabled="true"/> es para que funcione el /logout desde la url o hiperenlace -->
+<!--    	<sec:http use-expressions="true">
+		<sec:intercept-url pattern="/gestEmpleados.do" access="hasRole('USER')" />
+		<sec:intercept-url pattern="/gestEmpleados/*.do" access="hasRole('USER')" />
+		<sec:form-login />
+		<sec:logout logout-success-url="/"/>
+		<sec:csrf disabled="true"/>
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<sec:user-service>
+				<sec:user name="user" password="user"	authorities="ROLE_USER" />
+			</sec:user-service>
+		</sec:authentication-provider>
+	</sec:authentication-manager> -->
+	
+	<!-- Fin seguridad declarativa -->
 
 	<bean id="viewResolver"
 			class="org.springframework.web.servlet.view.InternalResourceViewResolver" >

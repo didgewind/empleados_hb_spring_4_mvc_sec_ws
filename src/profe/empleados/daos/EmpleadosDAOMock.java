@@ -25,12 +25,12 @@ public class EmpleadosDAOMock implements EmpleadosDAO {
 	private Map<String, Empleado> mpEmpleados = new HashMap<>();
 	
 	public EmpleadosDAOMock() {
-		mpEmpleados.put("123452435T",new Empleado("123452435T", "Esthela", "Ruíz", 54)); 
+		mpEmpleados.put("123452435T",new Empleado("123452435T", "Esthela", "Ruï¿½z", 54)); 
 		
 /*		(new Empleado("223452435A", "Manuel", "Alonso", 64));   
 		(new Empleado("323452435B", "Mirkka", "Touko", 22));    
 		(new Empleado("523452435S", "Ethan", "Hawk", 47));      
-		(new Empleado("623452435D", "Jesús", "Gutiérrez", 81)); */
+		(new Empleado("623452435D", "Jesï¿½s", "Gutiï¿½rrez", 81)); */
 	}
 	
 	@Override
@@ -103,17 +103,17 @@ public class EmpleadosDAOMock implements EmpleadosDAO {
 	
 	@PostConstruct
 	/**
-	 * Para rellenar el dao con muchos más empleados programáticamente
+	 * Para rellenar el dao con muchos mï¿½s empleados programï¿½ticamente
 	 */
 	public void completaDAO() {
 		this.mpEmpleados = new HashMap<>();
-		this.insertaEmpleado(new Empleado("123452435T", "Esthela", "Ruíz", 54));
+		this.insertaEmpleado(new Empleado("123452435T", "Esthela", "RuÃ­z", 54));
 		this.insertaEmpleado(new Empleado("223452435A", "Manuel", "Alonso", 64));
 		this.insertaEmpleado(new Empleado("323452435B", "Mirkka", "Touko", 22));
 		this.insertaEmpleado(new Empleado("523452435S", "Ethan", "Hawk", 47));
-		this.insertaEmpleado(new Empleado("623452435D", "Jesús", "Gutiérrez", 81));
-		this.insertaEmpleado(new Empleado("723452435F", "Anne", "Ruíz", 69));
-		this.insertaEmpleado(new Empleado("823452435G", "Nohemí", "Ruíz", 77));
+		this.insertaEmpleado(new Empleado("623452435D", "Jesï¿½s", "Gutiï¿½rrez", 81));
+		this.insertaEmpleado(new Empleado("723452435F", "Anne", "Ruï¿½z", 69));
+		this.insertaEmpleado(new Empleado("823452435G", "Nohemï¿½", "Ruï¿½z", 77));
 		this.insertaEmpleado(new Empleado("923452435H", "Lorena", "Corujo", 54));
 		this.insertaEmpleado(new Empleado("163452435J", "Amaya", "Valiente", 11));
 		this.insertaEmpleado(new Empleado("153452435K", "Javier", "Bravo", 14));

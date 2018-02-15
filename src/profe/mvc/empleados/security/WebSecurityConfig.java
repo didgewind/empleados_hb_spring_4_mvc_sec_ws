@@ -29,7 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		System.out.println("paso por acá");
 		http
 			.authorizeRequests()
-				.antMatchers("/*.do").authenticated()
+				.antMatchers("/gestEmpleados.do").authenticated()
+				.antMatchers("/gestEmpleados/*.do").authenticated()
 //				.anyRequest().authenticated()
 				.and()
 			.formLogin()

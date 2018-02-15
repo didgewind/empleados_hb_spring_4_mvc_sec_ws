@@ -6,7 +6,8 @@
 	<!-- Directorios -->
 	<property name="build.dir" value="build" />
 	<property name="config.dir" value="config" />
-	<property name="deploy.dir" value="/var/lib/tomcat8/webapps" />
+	<!--	<property name="deploy.dir" value="/var/lib/tomcat8/webapps"/>-->
+	<property name="deploy.dir" value="/home/made/applications/apache-tomcat-8.0.47/webapps"/>
 	<property name="file.name" value="empleados.war" />
 	<property name="bin.dir" value="bin" />
 	<property name="jsp.dir" value="jsp" />

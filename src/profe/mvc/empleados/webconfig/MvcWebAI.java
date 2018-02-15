@@ -4,7 +4,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import profe.mvc.empleados.security.WebSecurityConfig;
 
-public class MvcWebAI extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class MvcWebAI /*extends AbstractAnnotationConfigDispatcherServletInitializer*/ {
 
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class[] { WebSecurityConfig.class };
