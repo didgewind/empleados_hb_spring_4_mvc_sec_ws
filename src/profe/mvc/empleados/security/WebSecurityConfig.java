@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		System.out.println("paso por acá");
+		System.out.println("paso por websecurityconfig configure");
 		http
 			.authorizeRequests()
 				.antMatchers("/gestEmpleados.do").authenticated()
@@ -37,9 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.httpBasic()
 				.and()
-			.logout()
+			.logout().logoutSuccessUrl("/index.html")
+			/* Este código está para poder hacer logout sin necesidad de
+			 * deshabilitar csrf con .csrf().disable()
+			 */
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/index.html").deleteCookies("JSESSIONID")
+				.deleteCookies("JSESSIONID")
 				.invalidateHttpSession(true);
     }
 }

@@ -32,6 +32,8 @@
    	
    	<!-- Seguridad java config -->
     	<context:component-scan base-package="profe.mvc.empleados.security" />
+	<!-- Fin seguridad java config -->
+
   	
    	<!-- Seguridad declarativa -->
    	<!-- El <sec:csrf disabled="true"/> es para que funcione el /logout desde la url o hiperenlace -->
@@ -50,7 +52,7 @@
 			</sec:user-service>
 		</sec:authentication-provider>
 	</sec:authentication-manager> -->
-	
+
 	<!-- Fin seguridad declarativa -->
 
 	<bean id="viewResolver"

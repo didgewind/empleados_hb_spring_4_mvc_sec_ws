@@ -1,4 +1,4 @@
-Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc y seguridad. 
+Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc, ws y seguridad. 
 El web service lo implementamos de forma superficial. Para un ejemplo más completo de REST,
 mirar el proyecto empleados spring del workspace spring mvc, rest, boot y cloud, que
 además utiliza un validador bastante completo. Asímismo hay un ejemplo algo más completo de 
@@ -36,7 +36,9 @@ El LoggingAspect lo activamos desde el beans.xml o desde la clase (con el @Compo
 si usamos interfaces de spring, o en el META-INF/aop.xml si usamos aspectj ltw.
 
 Usamos aspectj ltw para que salten las transacciones al invocar métodos internamente.
-Activamos/desactivamos esto desde el beans.xml
+Activamos/desactivamos esto desde el beans.xml. Si lo desactivamos, necesitamos marcar
+el LoggingAspect como @Component para que lo detecte el weaver de spring. Ver los apuntes
+de aspectos.
 
 El mvc trabaja con empleados con operaciones básicas. Podemos configurarlo de dos formas:
 
@@ -47,6 +49,8 @@ para que no los detecte Spring como web initializers y no haya conflicto con el 
 - mediante configuración de clases java config. Comentamos lo relevante del web.xml y descomentamos
 el extends de webconfig.MvcWebAI. Usamos webconfig.EmpleadosWebConf para sustituir al
 applicationContext.xml, y webconfig.MvcWebAI para sustituir el código spring del web.xml.
+Ésta es una forma muy compleja, la copié de un tutorial de seguridad spring java config
+pero no es necesario usarla.
 
 - Añadimos un interceptor opensessioninview en applicationContext.xml para mantener
 abierta la sesión (doc en el mismo fichero, pero no funciona)
@@ -65,7 +69,8 @@ clase profe.mvc.empleados.security.WebSecurityConfig.
 la configuración de clases java config (ver más arriba), descomentamos el extends de la clase 
 security.SpringSWAI y codificamos el método getRootConfigClasses()
 de MvcWebAI para que devuelva new Class[] {WebSecurityConfig.class }. La seguridad se sigue
-configurando en la clase WebSecurityConfig.
+configurando en la clase WebSecurityConfig. Ésta es una forma muy compleja, la copié de un 
+tutorial de seguridad spring java config pero no es necesario usarla.
 
 Sobre el logout: parece que desde la versión 4 de spring security el logout por defecto sólo
 funciona cuando hacemos una petición de logout POST enviando un csrf (ver apuntes de seguridad
