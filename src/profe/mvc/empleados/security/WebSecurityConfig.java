@@ -35,8 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.formLogin()
 				.and()
-			.httpBasic()
-				.and()
 			.logout().logoutSuccessUrl("/index.html")
 			/* Este código está para poder hacer logout sin necesidad de
 			 * deshabilitar csrf con .csrf().disable()
