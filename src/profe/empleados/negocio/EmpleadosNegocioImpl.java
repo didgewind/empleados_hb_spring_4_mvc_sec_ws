@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import profe.empleados.daos.EmpleadosDAO;
+import profe.empleados.daos.EmpleadosDAOHB;
 import profe.empleados.model.Direccion;
 import profe.empleados.model.Empleado;
 import profe.empleados.model.Evento;
@@ -23,9 +24,14 @@ import profe.empleados.model.Sala;
 @Transactional
 public class EmpleadosNegocioImpl implements EmpleadosNegocio {
 
-	@Resource(name="daoMock")
-	private EmpleadosDAO dao;
+	/* dao inyectado por spring */
+/*	@Resource(name="daoMock")
+	private EmpleadosDAO dao;*/
 	
+	/* dao resolución activa */
+	private EmpleadosDAO dao = new EmpleadosDAOHB();
+	
+	/* Esto es simplemente un ejemplo de autowired con required=false */
 	@Autowired(required=false)
 	private Date fecha;
 

@@ -1,0 +1,36 @@
+drop database if exists empleados_direcciones;
+
+create database empleados_direcciones;
+\connect empleados_direcciones;
+
+CREATE TABLE IF NOT EXISTS direcciones
+(id SERIAL NOT NULL PRIMARY KEY,
+calle VARCHAR(50),
+cp INTEGER);
+
+CREATE TABLE IF NOT EXISTS empleados 
+(cif VARCHAR(9) NOT NULL, 
+nombre VARCHAR(20), 
+apellidos VARCHAR(20), 
+edad INTEGER,
+direccion INTEGER,
+FOREIGN KEY (direccion) REFERENCES direcciones(id), 
+primary key (cif));
+
+INSERT INTO direcciones (id, calle, cp) VALUES
+(1, 'Carrasco, 8', 23443);
+INSERT INTO direcciones (id, calle, cp) VALUES
+(2, 'Virgen del Amor, 75', 20067);
+INSERT INTO direcciones (id, calle, cp) VALUES
+(3, 'Bailén, 7', 21331);
+
+INSERT INTO empleados (cif, nombre, apellidos, edad, direccion) VALUES
+('34334789H', 'Antonio', 'Martín', 23, 1);
+INSERT INTO empleados (cif, nombre, apellidos, edad, direccion) VALUES
+('21094387T', 'Juan', 'González', 40, 2);
+INSERT INTO empleados (cif, nombre, apellidos, edad, direccion) VALUES
+('01293474E', 'Isabel', 'Fuentes', 18, 3);
+INSERT INTO empleados (cif, nombre, apellidos, edad, direccion) VALUES
+('23948745F', 'Lucille', 'King', 25, 1);
+INSERT INTO empleados (cif, nombre, apellidos, edad, direccion) VALUES
+('40948574G', 'Neo', 'Preno', 12, 1);

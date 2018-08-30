@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.context.internal.ManagedSessionContext;
 
 import profe.empleados.daos.EmpleadosDAO;
+import profe.empleados.daos.EmpleadosDAOHB;
 import profe.empleados.model.Direccion;
 import profe.empleados.model.Empleado;
 import profe.empleados.model.Evento;
@@ -21,10 +22,10 @@ import profe.empleados.util.HibernateUtil;
 public class GestorEmpleados {
 
 	private EmpleadosNegocio negocio = new EmpleadosNegocioImpl();
-	private EmpleadosDAO dao;
+	private EmpleadosDAO dao = new EmpleadosDAOHB();
 	
 	public static void main(String[] args) {
-		new GestorEmpleados().go();
+		new GestorEmpleados().preGo();
 	}
 	
 	private void preGo() {

@@ -1,4 +1,5 @@
-Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc, ws y seguridad. 
+Proyecto de gestión de empleado spring 4 con acceso a bds, aspectos, mvc, ws y seguridad.
+Para acceder a la bd usamos Hibernate 4.
 El web service lo implementamos de forma superficial. Para un ejemplo más completo de REST,
 mirar el proyecto empleados spring del workspace spring mvc, rest, boot y cloud, que
 además utiliza un validador bastante completo. Asímismo hay un ejemplo algo más completo de 
@@ -30,6 +31,11 @@ spring (EmpleadosDAOHB, GestorEmpleados), por otro con spring integrado (Emplead
 GestorEmpSpring) y además tenemos controladores mvc. Existen tres daos diferentes (un fake, 
 otro hibernate y un springhibernate), 
 una clase de negocio y dos gestores de consola (uno hibernate y otro springhibernate).
+
+Para que funcione el GestorEmpleados (hibernate sin spring) debemos comentar / descomentar
+el código correspondiente en la clase de negocio para resolver el dao de forma activa.
+Utilizamos el método prego() para mostrar cómo utilizar openSession() con 
+current_session_context_class=managed (hay que configurar esto en el hibernate.cfg.xml).
 
 Definimos algunos beans con anotaciones y otros con xml, un loggingaspect y transacciones declaradas.
 El LoggingAspect lo activamos desde el beans.xml o desde la clase (con el @Component)
