@@ -8,7 +8,8 @@ spring mvc en este mismo workspace en el proyecto spring 4 mvc.
 Podemos atacar la bd empleados compleja en mysql o la simple en postgres cuando está todo integrado
 con spring. Para seleccionar una u otra, en el beans.xml necesitamos asignar el
 name="dataSource" en el datasource que queramos y el name="myHBSessionFactory" a la
-factoría de sesiones correspondiente.
+factoría de sesiones correspondiente, o si no estamos usando spring, comentar/descomentar en
+HibernateUtil el código correspondiente.
 
 Tenemos también los ficheros de creación de la misma bd pero la tabla regalos tiene clave compuesta
 

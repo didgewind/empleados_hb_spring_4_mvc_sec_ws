@@ -1,11 +1,14 @@
 package profe.empleados.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.context.internal.ManagedSessionContext;
+import org.hibernate.criterion.Restrictions;
 
 import profe.empleados.daos.EmpleadosDAO;
 import profe.empleados.daos.EmpleadosDAOHB;
@@ -25,7 +28,7 @@ public class GestorEmpleados {
 	private EmpleadosDAO dao = new EmpleadosDAOHB();
 	
 	public static void main(String[] args) {
-		new GestorEmpleados().preGo();
+		new GestorEmpleados().go();
 	}
 	
 	private void preGo() {
@@ -50,7 +53,8 @@ public class GestorEmpleados {
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();
-			listaEmpleados();
+			testCriteria(session);
+//			listaEmpleados(negocio.getAllEmpleados());
 			tx.commit();
 		} catch (RuntimeException ex) {
 			ex.printStackTrace();
@@ -60,9 +64,17 @@ public class GestorEmpleados {
 			throw ex;
 		}
 		HibernateUtil.shutdown();
-		System.out.println("Fin de la aplicaci�n");
+		System.out.println("Fin de la aplicación");
 	}
 
+	private void testCriteria(Session session) {
+		Criteria cr = session.createCriteria(Empleado.class);
+
+		// To get records having edad more than 20
+		cr.add(Restrictions.gt("edad", 20));
+		listaEmpleados(cr.list());
+	}
+	
 	private void testGetNomina() {
 		Nomina nomina = dao.getNomina(1);
 		System.out.println(nomina);
@@ -76,8 +88,8 @@ public class GestorEmpleados {
 	}
 	
 	
-	private void listaEmpleados() {
-		for (Empleado emp : negocio.getAllEmpleados()) {
+	private void listaEmpleados(Collection<Empleado> empleados) {
+		for (Empleado emp : empleados) {
 			System.out.println(emp);
 		}
 	}
@@ -96,7 +108,7 @@ public class GestorEmpleados {
 		List<Empleado> lEmps = new ArrayList<>();
 		// a�adimos empleados a la lista
 		lEmps.add(new Empleado("12431235T", "aaa", "kkk", 43));
-		lEmps.add(new Empleado("23432466E", "Luc�a", "Vargas", 34));
+		lEmps.add(new Empleado("23432466E", "Lucía", "Vargas", 34));
 		lEmps.add(new Empleado("12431235T", "Luis", "Tosar", 43));
 		negocio.insertaEmpleados(lEmps);
 	}

@@ -14,7 +14,10 @@ public class HibernateUtil {
 			// Create the SessionFactory from standard (hibernate.cfg.xml)
 			// config file.
 			Configuration configuration = new Configuration();
+			/* MySql */
 			configuration.configure();
+			/* Postgres */
+//			configuration.configure("hibernate_postgres.cfg.xml");
 			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
 		            configuration.getProperties()).build();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);

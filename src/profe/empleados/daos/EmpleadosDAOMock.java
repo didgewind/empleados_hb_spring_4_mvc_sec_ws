@@ -25,12 +25,12 @@ public class EmpleadosDAOMock implements EmpleadosDAO {
 	private Map<String, Empleado> mpEmpleados = new HashMap<>();
 	
 	public EmpleadosDAOMock() {
-		mpEmpleados.put("123452435T",new Empleado("123452435T", "Esthela", "Ru�z", 54)); 
+		mpEmpleados.put("123452435T",new Empleado("123452435T", "Esthela", "Ruíz", 54)); 
 		
 /*		(new Empleado("223452435A", "Manuel", "Alonso", 64));   
 		(new Empleado("323452435B", "Mirkka", "Touko", 22));    
 		(new Empleado("523452435S", "Ethan", "Hawk", 47));      
-		(new Empleado("623452435D", "Jes�s", "Guti�rrez", 81)); */
+		(new Empleado("623452435D", "Jesús", "Gutiérrez", 81)); */
 	}
 	
 	@Override

@@ -43,7 +43,7 @@
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost/empleados_simple" />
 		<property name="username" value="postgres" />
-		<property name="password" value="a" />
+		<property name="password" value="postgres" />
 	</bean>
 
 	<!-- HIBERNATE mysql -->
@@ -60,6 +60,8 @@
 				<value>teclado.hbm.xml</value>
 			</list>
 		</property>
+		<!-- Para escanear entidades -->
+<!-- 		<property name="packagesToScan" value="profe.empleados.model" /> --> 
  		<property name="annotatedClasses">
 			<list>
 				<value>profe.empleados.model.Direccion</value>
