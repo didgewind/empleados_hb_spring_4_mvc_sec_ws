@@ -25,11 +25,11 @@ import profe.empleados.model.Sala;
 public class EmpleadosNegocioImpl implements EmpleadosNegocio {
 
 	/* dao inyectado por spring */
-/*	@Resource(name="daoMock")
-	private EmpleadosDAO dao;*/
+	@Resource(name="daoHbSpring")
+	private EmpleadosDAO dao;
 	
 	/* dao resolución activa */
-	private EmpleadosDAO dao = new EmpleadosDAOHB();
+//	private EmpleadosDAO dao = new EmpleadosDAOHB();
 	
 	/* Esto es simplemente un ejemplo de autowired con required=false */
 	@Autowired(required=false)

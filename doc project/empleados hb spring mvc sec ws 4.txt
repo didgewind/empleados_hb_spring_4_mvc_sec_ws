@@ -13,6 +13,10 @@ HibernateUtil el código correspondiente.
 
 Tenemos también los ficheros de creación de la misma bd pero la tabla regalos tiene clave compuesta
 
+* PARA QUE FUNCIONE HIBERNATE SIN SPRING / CON SPRING
+
+- Cambiar el dao del que tiramos en la clase de negocio
+
 * FUNCIONALIDAD
 
 Entrando en la raíz ya nos aparece un enlace a la página de gestión y otro para hacer una petición

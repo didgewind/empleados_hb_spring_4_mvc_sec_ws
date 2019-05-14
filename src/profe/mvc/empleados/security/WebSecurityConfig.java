@@ -26,7 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		System.out.println("paso por websecurityconfig configure");
 		http
 			.authorizeRequests()
 				.antMatchers("/gestEmpleados.do").authenticated()
