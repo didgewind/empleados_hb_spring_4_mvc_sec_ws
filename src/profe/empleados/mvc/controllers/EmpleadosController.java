@@ -1,20 +1,18 @@
 package profe.empleados.mvc.controllers;
 
 
+import java.util.Collection;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import profe.empleados.model.Empleado;
 import profe.empleados.negocio.EmpleadosNegocio;
-
-
 
 @Controller
 @SessionAttributes("empleado")
@@ -127,6 +123,10 @@ public class EmpleadosController {
 
 	@RequestMapping(params={"elimina"}, method=RequestMethod.POST)
 	public String eliminaEmp(@ModelAttribute Empleado emp, Model model) {
+		if (!isAdmin()) {
+			model.addAttribute("mensaje", "Error: no estás autorizado");
+			return "empleados";
+		}
 		boolean resultado = negocio.eliminaEmpleado(emp.getCif());
 		model.addAttribute("mensaje", resultado ? "Empleado eliminado correctamente" :
 			"Error al eliminar el empleado con cif " + emp.getCif());
@@ -153,5 +153,13 @@ public class EmpleadosController {
 		model.addAttribute("mensaje", resultado ? "Empleado modificado correctamente" :
 			"Error al modificar el empleado con cif " + emp.getCif());
 		return "empleados";
+	}
+	
+	/* Devuelve true si el principal tiene el role ADMIN */
+	private boolean isAdmin() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection authorities = auth.getAuthorities();
+		System.out.println(authorities);
+		return authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 	}
 }

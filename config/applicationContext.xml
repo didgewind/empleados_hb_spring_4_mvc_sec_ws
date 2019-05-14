@@ -38,8 +38,8 @@
    	<!-- Seguridad declarativa -->
    	<!-- El <sec:csrf disabled="true"/> es para que funcione el /logout desde la url o hiperenlace -->
 <!--    	<sec:http use-expressions="true">
-		<sec:intercept-url pattern="/gestEmpleados.do" access="hasRole('USER')" />
-		<sec:intercept-url pattern="/gestEmpleados/*.do" access="hasRole('USER')" />
+		<sec:intercept-url pattern="/gestEmpleados.do" access="hasAnyRole('USER','ADMIN')" />
+		<sec:intercept-url pattern="/gestEmpleados/*.do" access="hasAnyRole('USER','ADMIN')" />
 		<sec:form-login />
 		<sec:logout logout-success-url="/"/>
 		<sec:csrf disabled="true"/>
@@ -48,7 +48,8 @@
 	<sec:authentication-manager>
 		<sec:authentication-provider>
 			<sec:user-service>
-				<sec:user name="user" password="user"	authorities="ROLE_USER" />
+				<sec:user name="profe" password="profe"	authorities="ROLE_USER" />
+				<sec:user name="admin" password="admin"	authorities="ROLE_ADMIN" />
 			</sec:user-service>
 		</sec:authentication-provider>
 	</sec:authentication-manager> -->

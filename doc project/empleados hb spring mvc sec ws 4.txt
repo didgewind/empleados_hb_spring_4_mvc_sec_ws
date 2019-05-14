@@ -66,7 +66,9 @@ pero no es necesario usarla.
 - Añadimos un interceptor opensessioninview en applicationContext.xml para mantener
 abierta la sesión (doc en el mismo fichero, pero no funciona)
 
-La seguridad se aplica sobre la parte web. Para aplicar seguridad tenemos tres opciones:
+* SEGURIDAD
+
+Se aplica sobre la parte web. Para aplicar seguridad tenemos tres opciones:
 
 - Seguridad declarativa: filtro de seguridad en el web.xml, comentar el bloque <!-- Seguridad java config -->
 y descomentar el bloque <!-- Seguridad declarativa --> de applicationContext.xml. La seguridad se configura
@@ -82,6 +84,11 @@ security.SpringSWAI y codificamos el método getRootConfigClasses()
 de MvcWebAI para que devuelva new Class[] {WebSecurityConfig.class }. La seguridad se sigue
 configurando en la clase WebSecurityConfig. Ésta es una forma muy compleja, la copié de un 
 tutorial de seguridad spring java config pero no es necesario usarla.
+
+Además usamos seguridad programática (permitiendo el borrado de empleados únicamente si tienes
+role ADMIN) mediante los métodos isAdmin() y eliminaEmp() del controlador y
+seguridad declarativa a nivel de métodos inserta y modifica en la clase de negocio con anotaciones 
+@PreAuthorize("hasRole('ADMIN')")
 
 Sobre el logout: parece que desde la versión 4 de spring security el logout por defecto sólo
 funciona cuando hacemos una petición de logout POST enviando un csrf (ver apuntes de seguridad

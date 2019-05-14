@@ -4,17 +4,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import profe.empleados.daos.EmpleadosDAO;
-import profe.empleados.daos.EmpleadosDAOHB;
 import profe.empleados.model.Direccion;
 import profe.empleados.model.Empleado;
 import profe.empleados.model.Evento;
@@ -46,12 +43,14 @@ public class EmpleadosNegocioImpl implements EmpleadosNegocio {
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ADMIN')")
 	public boolean insertaEmpleado(Empleado emp) {
 		dao.insertaEmpleado(emp);
 		return true;
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ADMIN')")
 	public boolean modificaEmpleado(Empleado emp) {
 		dao.modificaEmpleado(emp);
 		return true;
